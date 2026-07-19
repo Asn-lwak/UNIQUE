@@ -34,6 +34,9 @@
 
         <h1>Login</h1>
 
+        <p id="message"></p>
+        <p id="message1"></p>
+
         <form action="/login" method="POST">
 
             <label for="login-email">Email</label>
@@ -64,6 +67,34 @@
 
 </main>
 
+
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    const message = document.getElementById("message");
+
+    if (params.get("error") === "notfound") {
+
+        message.innerText = "User not found!";
+        message.style.color = "red";
+
+    }
+
+    if (params.get("error") === "password") {
+
+        message.innerText = "Incorrect password!";
+        message.style.color = "red";
+
+    }
+
+    if (params.get("registered") === "true") {
+
+        message.innerText = "Successfully registered! Please log in.";
+        message.style.color = "green";
+
+    }
+</script>
 
 <footer>
 

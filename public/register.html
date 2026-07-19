@@ -34,6 +34,8 @@
 
         <h1>Create Account</h1>
 
+        <p id="message"></p>
+
         <form action="/register" method="POST">
 
             <label for="email">Email</label>
@@ -62,6 +64,17 @@
 
 </main>
 
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("error") === "email") {
+        document.getElementById("message").innerText =
+        "This email is already registered!";
+        document.getElementById("message").style.color = "red";
+    }
+
+</script>
 
 <footer>
 

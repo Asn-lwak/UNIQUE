@@ -38,6 +38,11 @@ db.prepare(`
 // Allow Express to read form data
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+    res.locals.message = null;
+    next();
+});
+
 // Serve files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -60,12 +65,12 @@ app.post("/register", async (req, res) => {
 
         console.log("New user registered:", email);
 
-        res.redirect("/login.html");
+        res.redirect("/login.html?registered=true");
 
     } catch (error) {
 
         if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
-            res.send("This email is already registered!");
+            res.redirect("/register.html?error=email");
         } else {
             res.send("Something went wrong!");
         }
@@ -86,7 +91,7 @@ app.post("/login", async (req, res) => {
     `).get(email);
 
     if (!user) {
-        return res.send("User not found!");
+        return res.redirect("/login.html?error=notfound");
     }
 
     const passwordMatches = await bcrypt.compare(
@@ -95,7 +100,7 @@ app.post("/login", async (req, res) => {
     );
 
     if (!passwordMatches) {
-        return res.send("Incorrect password!");
+        return res.redirect("/login.html?error=password");
     }
 
     req.session.user = {

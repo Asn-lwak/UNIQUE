@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>UNIQUE | Profile</title>
+
+        <link rel="stylesheet" href="style.css">
+
+    </head>
+
+    <body>
+
+        <header>
+
+            <h2 class="logo">UNIQUE</h2>
+
+            <h2>Profile</h2>
+
+            <nav></nav>
+
+        </header>
+
+
+        <main class="profile-page">
+
+            <section class="profile-card">
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+                <p class="dashboard-label">
+                    ACCOUNT / PROFILE
+                </p>
+
+                <h1 id="profileEmail">
+                    Loading...
+                </h1>
+
+                <div class="profile-info">
+
+                    <div class="profile-item">
+
+                        <span>Account ID</span>
+
+                        <strong id="profileId">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>Email</span>
+
+                        <strong id="profileEmailInfo">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span>Role</span>
+
+                        <strong id="profileRole">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <button onclick="changePassword()">
+                        Change Password
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <script src="auth-nav.js"></script>
+
+
+        <script>
+
+            fetch("/api/current-user")
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    if (!data.loggedIn) {
+
+                        window.location.href = "login.html";
+
+                        return;
+
+                    }
+
+                    const user = data.user;
+
+
+                    document.getElementById("profileEmail")
+                        .textContent = user.email;
+
+
+                    document.getElementById("profileEmailInfo")
+                        .textContent = user.email;
+
+
+                    document.getElementById("profileId")
+                        .textContent = user.id;
+
+
+                    document.getElementById("profileRole")
+                        .textContent = user.role.toUpperCase();
+
+                });
+
+
+            function changePassword() {
+
+                alert(
+                    "Password changing system coming soon 🔐"
+                );
+
+            }
+
+        </script>
+
+    </body>
+
+</html>

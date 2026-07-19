@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UNIQUE | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h2 class="logo">UNIQUE</h2>
+        <h2>Admin Dashboard</h2>
+        <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <main class="admin-main">
+
+        <section class="dashboard-intro">
+
+            <p class="dashboard-label">SYSTEM / ADMIN</p>
+
+            <h1>Welcome to the Control Center</h1>
+
+            <p>
+                Manage users and monitor your UNIQUE platform.
+            </p>
+
+        </section>
+
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <span>👥</span>
+                <h3 id="userCount">0</h3>
+                <p>Total Users</p>
+            </div>
+
+            <div class="stat-card">
+                <span>📬</span>
+                <h3 id="messageCount">
+                    0
+                </h3>
+                <p>Messages</p>
+
+            </div>
+
+            <div class="stat-card">
+                <span>👑</span>
+                <h3 id="adminCount">0</h3>
+                <p>Administrators</p>
+            </div>
+
+            <div class="stat-card">
+                <span>🟢</span>
+                <h3>ONLINE</h3>
+                <p>System Status</p>
+            </div>
+
+        </section>
+
+
+        <section class="table">
+
+            <div class="table-header">
+
+                <div>
+                    <p class="dashboard-label">DATABASE / USERS</p>
+                    <h2>Registered Users</h2>
+                </div>
+
+                <span class="live-status">
+                    ● LIVE
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="usersTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <section class="table messages-section">
+
+            <h1>Contact Messages</h1>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="messagesTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        fetch("/admin/users")
+            .then(response => response.json())
+            .then(users => {
+
+                document.getElementById("userCount").textContent = users.length;
+
+                    document.getElementById("adminCount").textContent =
+                        users.filter(user => user.role === "admin").length;
+
+                const usersTable = document.getElementById("usersTable");
+
+                users.forEach((user, index) => {
+
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td>
+                            ${
+                                user.role === "user"
+                                    ? `<button onclick="deleteUser(${user.id})">Delete</button>`
+                                    : "Protected"
+                            }
+                        </td>
+                    `;
+
+                    usersTable.appendChild(row);
+
+                });
+
+            });
+
+
+        function deleteUser(id) {
+
+            const confirmed = confirm(
+                "Are you sure you want to delete this user?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            fetch(`/admin/delete-user/${id}`, {
+                method: "DELETE"
+            })
+            .then(response => response.text())
+            .then(message => {
+
+                alert(message);
+
+                location.reload();
+
+            });
+
+        }
+
+        fetch("/admin/messages")
+
+            .then(response => response.json())
+            .then(messages => {
+
+                document.getElementById("messageCount").textContent =
+                    messages.length;
+
+
+                const messagesTable =
+                    document.getElementById("messagesTable");
+
+
+                messages.forEach((message, index) => {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${message.name}
+                        </td>
+
+                        <td>
+                            ${message.email}
+                        </td>
+
+                        <td class="message-text">
+                            ${message.message}
+                        </td>
+
+                        <td>
+                            ${message.created_at}
+                        </td>
+
+                        <td>
+
+                            <button
+                                onclick="deleteMessage(${message.id})">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    messagesTable.appendChild(row);
+
+                });
+
+            });
+            function deleteMessage(id) {
+
+                const confirmed = confirm(
+                    "Are you sure you want to delete this message?"
+                );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                fetch(`/admin/delete-message/${id}`, {
+
+                    method: "DELETE"
+
+                })
+
+                .then(response => response.text())
+
+                .then(message => {
+
+                    alert(message);
+
+                    location.reload();
+
+                });
+
+            }
+
+    </script>
+
+    <script src="auth-nav.js"></script>
+
+</body>
+
+</html>

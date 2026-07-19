@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UNIQUE | Contact</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <h2>UNIQUE</h2>
+
+        <nav></nav>
+        
+    </header>
+
+    <main>
+
+        <section class="page">
+
+            <h1>Contact UNIQUE</h1>
+
+            <p>
+                Have a question or want to share feedback?
+                Feel free to reach out!
+            </p>
+
+
+            <div class="contact-info">
+
+                <h2>Contact Information</h2>
+
+                <p>
+                    📧 Email: coming soon...
+                </p>
+
+                <p>
+                    💬 Discord: Coming soon...
+                </p>
+
+                <p>
+                    🌐 GitHub: coming soon...
+                </p>
+
+            </div>
+
+
+            <div class="contact-form">
+
+                <h2>Send a Message</h2>
+
+
+                <form id="contactForm">
+
+                    <label>Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@example.com"
+                        required
+                    >
+
+                    <label>Message</label>
+
+                    <textarea
+                        name="message"
+                        placeholder="Write your message..."
+                        required
+                    ></textarea>
+
+                    <button type="submit">
+                        Send
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <p>
+            © 2026 UNIQUE. All rights reserved.
+        </p>
+
+    </footer>
+    
+    <script>
+        const contactForm =
+            document.getElementById("contactForm");
+
+
+        contactForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const formData =
+                    new FormData(contactForm);
+
+
+                const response =
+                    await fetch("/contact", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/x-www-form-urlencoded"
+                        },
+
+                        body: new URLSearchParams(formData)
+
+                    });
+
+
+                const message =
+                    await response.text();
+
+
+                alert(message);
+
+
+                contactForm.reset();
+
+            }
+        );
+    </script>
+    <script src="auth-nav.js"></script>
+
+</body>
+
+</html>

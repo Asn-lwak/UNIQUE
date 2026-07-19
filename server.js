@@ -14,7 +14,7 @@ app.use(session({
 
 const db = new Database("data.db");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS users (

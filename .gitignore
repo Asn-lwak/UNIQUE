@@ -2,6 +2,5 @@ node_modules/
 data.db
 .env
 delete-user.js
-create-admin.js
 admin-update.js
 .vscode/

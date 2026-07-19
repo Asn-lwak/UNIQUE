@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(session({
-    secret: "unique-secret-key",
+    secret: process.env.SESSION_SECRET || "unique-secret-key",
     resave: false,
     saveUninitialized: false
 }));
@@ -247,7 +247,7 @@ app.delete(
 app.listen(PORT, () => {
 
     console.log(
-        `🚀 Server running at http://localhost:${PORT}`
+        `🚀 Server running on port ${PORT}`
     );
 
 });

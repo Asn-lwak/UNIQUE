@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || "unique-secret-key",
+    secret: process.env.SESSION_SECRET || "dev-only-secret-change-me",
     resave: false,
     saveUninitialized: false
 }));
@@ -60,7 +60,7 @@ app.post("/register", async (req, res) => {
 
         console.log("New user registered:", email);
 
-        res.send("Registration successful!");
+        res.redirect("/login.html");
 
     } catch (error) {
 
